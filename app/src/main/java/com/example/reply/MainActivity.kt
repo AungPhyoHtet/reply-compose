@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -23,6 +26,7 @@ import com.example.reply.ui.ReplyApp
 import com.example.reply.ui.theme.ReplyTheme
 
 class MainActivity : ComponentActivity() {
+  @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     enableEdgeToEdge()
@@ -38,7 +42,10 @@ class MainActivity : ComponentActivity() {
                 .calculateEndPadding(layoutDirection)
             )
         ) {
-          ReplyApp()
+          val windowSize = calculateWindowSizeClass(this)
+          ReplyApp(
+            windowSize = windowSize.widthSizeClass
+          )
         }
       }
     }
@@ -50,7 +57,7 @@ class MainActivity : ComponentActivity() {
 fun ReplyAppCompactPreview() {
   ReplyTheme {
     Surface {
-      ReplyApp()
+      ReplyApp(windowSize = WindowWidthSizeClass.Compact)
     }
   }
 }
