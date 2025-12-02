@@ -30,12 +30,12 @@ fun ReplyApp(
       contentType = ReplyContentType.LIST_ONLY
     }
 
-    WindowWidthSizeClass.Medium ->  {
+    WindowWidthSizeClass.Medium -> {
       navigationType = ReplyNavigationType.NAVIGATION_RAIL
       contentType = ReplyContentType.LIST_ONLY
     }
 
-    WindowWidthSizeClass.Expanded ->  {
+    WindowWidthSizeClass.Expanded -> {
       navigationType = ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER
       contentType = ReplyContentType.LIST_AND_DETAIL
     }
@@ -52,12 +52,13 @@ fun ReplyApp(
     replyUiState = replyUiState,
     onTabPressed = { mailboxType: MailboxType ->
       viewModel.updateCurrentMailbox(mailboxType = mailboxType)
-      viewModel.resetHomeScreenStates()
     },
     onEmailCardPressed = { email: Email ->
-      viewModel.updateDetailsScreenStates(
-        email = email
-      )
+      if (contentType == ReplyContentType.LIST_ONLY) {
+        viewModel.updateDetailsScreenStates(email = email)
+      } else {
+        viewModel.setSelectedEmail(email = email)
+      }
     },
     onDetailScreenBackPressed = {
       viewModel.resetHomeScreenStates()
@@ -69,9 +70,9 @@ fun ReplyApp(
 @Preview(showBackground = true)
 @Composable
 fun ReplyAppPreview() {
-    ReplyTheme {
-        Surface {
-            ReplyApp(windowSize = WindowWidthSizeClass.Compact)
-        }
+  ReplyTheme {
+    Surface {
+      ReplyApp(windowSize = WindowWidthSizeClass.Compact)
     }
+  }
 }

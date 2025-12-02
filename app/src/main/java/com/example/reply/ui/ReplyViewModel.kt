@@ -36,6 +36,14 @@ class ReplyViewModel : ViewModel() {
     }
   }
 
+  fun setSelectedEmail(email: Email) {
+    _uiState.update {
+      it.copy(
+        currentSelectedEmail = email
+      )
+    }
+  }
+
   fun resetHomeScreenStates() {
     _uiState.update {
       it.copy(
@@ -49,7 +57,9 @@ class ReplyViewModel : ViewModel() {
   fun updateCurrentMailbox(mailboxType: MailboxType) {
     _uiState.update {
       it.copy(
-        currentMailbox = mailboxType
+        currentMailbox = mailboxType,
+        currentSelectedEmail = it.mailboxes[mailboxType]?.get(0)
+          ?: LocalEmailsDataProvider.defaultEmail
       )
     }
   }
