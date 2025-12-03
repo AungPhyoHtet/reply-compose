@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -81,6 +82,7 @@ fun ReplyHomeScreen(
   if (navigationType == ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER
     && replyUiState.isShowingHomepage
   ) {
+    val navigationDrawerContentDescription = stringResource(R.string.navigation_drawer)
     PermanentNavigationDrawer(
       drawerContent = {
         PermanentDrawerSheet(Modifier.width(dimensionResource(R.dimen.drawer_width))) {
@@ -93,6 +95,7 @@ fun ReplyHomeScreen(
               .fillMaxHeight()
               .background(MaterialTheme.colorScheme.inverseOnSurface)
               .padding(dimensionResource(R.dimen.drawer_padding_content))
+              .testTag(navigationDrawerContentDescription)
           )
         }
       }
@@ -141,10 +144,12 @@ private fun ReplyAppContent(
 ) {
   Row(modifier = modifier) {
     AnimatedVisibility(visible = navigationType == ReplyNavigationType.NAVIGATION_RAIL) {
+      val navigationRailContentDescription = stringResource(R.string.navigation_rail)
       ReplyNavigationRail(
         currentTab = replyUiState.currentMailbox,
         onTabPressed = onTabPressed,
-        navigationItemContentList = navigationItemContentList
+        navigationItemContentList = navigationItemContentList,
+        modifier = modifier.testTag(navigationRailContentDescription)
       )
     }
     Column(
@@ -170,12 +175,14 @@ private fun ReplyAppContent(
         )
       }
       AnimatedVisibility(visible = navigationType == ReplyNavigationType.BOTTOM_NAVIGATION) {
+        val bottomNavigationContentDescription = stringResource(R.string.navigation_bottom)
         ReplyBottomNavigationBar(
           currentTab = replyUiState.currentMailbox,
           onTabPressed = onTabPressed,
           navigationItemContentList = navigationItemContentList,
           modifier = Modifier
             .fillMaxWidth()
+            .testTag(bottomNavigationContentDescription)
         )
       }
     }
